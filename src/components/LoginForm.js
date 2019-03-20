@@ -7,18 +7,17 @@ import firebase from 'firebase';
 export default class LoginForm extends Component {
 
   state = {   email: '',
-              password: '',
               error: '',
               loading: false  
 };
 
   onButtonPress() {
       
-      const {email, password } = this.state;
+      const {email } = this.state;
 
       this.setState({ error: '', loading: true });
 
-      firebase.auth().signInWithEmailAndPassword(email.trim(), password)
+      firebase.auth().signInWithEmailAndPassword(email.trim())
       .then(this.onLoginSuccess.bind(this))
       .catch(this.onLoginFailed.bind(this))
   }
@@ -29,11 +28,6 @@ export default class LoginForm extends Component {
           error: "You haven't entered your email.", 
           loading: false
           });
-      else if (this.state.password == '')
-        this.setState({ 
-          error: "You haven't entered your password.", 
-          loading: false
-          }); 
       else 
         this.setState({ 
         error: 'Authentication Failed.', 
@@ -44,12 +38,9 @@ export default class LoginForm extends Component {
   onLoginSuccess(){
       this.setState({ 
       email: '',
-      password: '',
       loading: false,
       error: ''
-      });
-
-    // Actions.eventsList();    
+      });   
   }
 
   renderButton() {
@@ -84,26 +75,11 @@ export default class LoginForm extends Component {
                         onChangeText = {email => this.setState({ email })}
                     />
                 </CardSection>
-                <CardSection>
-                    <Input
-                        secureTextEntry
-                        placeholder = "password"
-                        placeholderTextColor="rgba(0,0,0,0.5)" 
-                        label = "Password"
-                        value = { this.state.password }
-                        onChangeText = { password => this.setState({ password })}
-                    />
-                </CardSection>
+             
                 <CardSection>
                     {this.renderButton()}
                 </CardSection>
-                <CardSection style={{justifyContent: 'center', alignItems: 'center'}}>
-                    <TouchableOpacity onPress={ () => this.goToRegistration()} style={styles.registration}>
-                        <Text>
-                            Don't have an account? Register here.
-                          </Text>
-                    </TouchableOpacity>
-                </CardSection>
+              
                 <CardSection style={{height:18, justifyContent: 'center', borderBottomLeftRadius:20, borderBottomRightRadius:20}}> 
                 <Text style={styles.errorTextStyle}>
                     {this.state.error}
@@ -116,9 +92,9 @@ export default class LoginForm extends Component {
       );
      }
     
-    goToRegistration(){
-      this.props.navigation.navigate('Registration');
-    }
+    // goToRegistration(){
+    //   this.props.navigation.navigate('Registration');
+    // }
 
   }
 
